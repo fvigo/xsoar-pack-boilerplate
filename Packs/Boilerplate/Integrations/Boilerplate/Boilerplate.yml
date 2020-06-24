@@ -26,6 +26,39 @@ display: Boilerplate
 name: Boilerplate
 script:
   commands:
+  - name: boilerplate-get-alert
+    description: Retrieve alert by ID
+    deprecated: false
+    execution: false
+    arguments:
+    - default: false
+      description: Alert ID to retrieve
+      isArray: false
+      name: alert_id
+      required: true
+      secret: false
+    outputs:
+    - contextPath: Boilerplate.Alert.alert_id
+      description: Alert ID.
+      type: String
+    - contextPath: Boilerplate.Alert.created
+      description: Boilerplate created time. Format is ISO8601 (i.e. '2020-04-30T10:35:00.000Z').
+      type: Date
+    - contextPath: Boilerplate.Alert.description
+      description: Alert description.
+      type: String
+    - contextPath: Boilerplate.Alert.device_id
+      description: ID of the device involved in the alert.
+      type: String
+    - contextPath: Boilerplate.Alert.device_ip
+      description: IP Address of the device involved in the alert.
+      type: String
+    - contextPath: Boilerplate.Alert.location
+      description: Location of the device involved in the alert.
+      type: String
+    - contextPath: Boilerplate.Alert.user
+      description: User involved in the alert.
+      type: String      
   isfetch: false
   runonce: false
   script: '-'

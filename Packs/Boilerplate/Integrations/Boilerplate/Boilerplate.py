@@ -8,7 +8,7 @@ from CommonServerUserPython import *
 
 import requests
 import traceback
-# from typing import Any, Dict
+from typing import Any, Dict
 
 # Disable insecure warnings
 requests.packages.urllib3.disable_warnings()
@@ -32,6 +32,16 @@ class Client(BaseClient):
     Most calls use _http_request() that handles proxy, SSL verification, etc.
     For this  implementation, no special attributes defined
     """
+
+    def get_alert(self, alert_id: str) -> Dict[str, Any]:
+
+        return self._http_request(
+            method='GET',
+            url_suffix=f'/get_alert_details',
+            params={
+                'alert_id': alert_id
+            }
+        )
 
 
 ''' HELPER FUNCTIONS '''
@@ -57,7 +67,7 @@ def test_module(client: Client) -> str:
     """
 
     try:
-        pass  # do something
+        client.get_alert(alert_id='something')
     except DemistoException as e:
         if 'Forbidden' in str(e):
             return 'Authorization Error: make sure API Key is correctly set'
@@ -65,6 +75,24 @@ def test_module(client: Client) -> str:
             raise e
     return 'ok'
 
+def get_alert_command(client: Client, args: Dict[str, Any]) -> CommandResults:
+
+    alert_id = args.get('alert_id', None)
+    if not alert_id:
+        raise ValueError('alert_id not specified')
+
+    alert = client.get_alert(alert_id)
+
+    # convert the date to ISO
+    if 'created' in alert:
+        created_time_ms = int(alert.get('created', '0')) * 1000
+        alert['created'] = timestamp_to_datestring(created_time_ms)
+
+    return CommandResults(
+        outputs_prefix='Boilerplate.Alert',
+        outputs_key_field='alert_id',
+        outputs=alert
+    )
 
 ''' MAIN FUNCTION '''
 
@@ -105,6 +133,9 @@ def main() -> None:
             # This is the call made when pressing the integration Test button.
             result = test_module(client)
             return_results(result)
+        
+        elif demisto.command() == 'boilerplate-get-alert':
+            return_results(get_alert_command(client, demisto.args()))
 
     # Log exceptions and return errors
     except Exception as e:

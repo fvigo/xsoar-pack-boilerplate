@@ -29,7 +29,7 @@ Retrieve alert by ID
 
 | **Argument Name** | **Description** | **Required** |
 | --- | --- | --- |
-| alert_id | Alert ID to retrieve. | Required | 
+| alert_id | Alert ID to retrieve | Required | 
 
 
 #### Context Output
@@ -46,8 +46,29 @@ Retrieve alert by ID
 
 
 #### Command Example
-``` ```
+```!boilerplate-get-alert alert_id=myalert```
+
+#### Context Example
+```
+{
+    "Boilerplate": {
+        "Alert": {
+            "alert_id": "myalert",
+            "created": "2020-06-11T15:42:24.000Z",
+            "description": "new management",
+            "device_id": "baf77708-d372-42d7-a6d2-3c1e26c455c1",
+            "device_ip": "11.213.4.113",
+            "location": "Medina Station",
+            "user": "Debra Whitman"
+        }
+    }
+}
+```
 
 #### Human Readable Output
 
+>### Results
+>|alert_id|created|description|device_id|device_ip|location|user|
+>|---|---|---|---|---|---|---|
+>| myalert | 2020-06-11T15:42:24.000Z | new management | baf77708-d372-42d7-a6d2-3c1e26c455c1 | 11.213.4.113 | Medina Station | Debra Whitman |
 
